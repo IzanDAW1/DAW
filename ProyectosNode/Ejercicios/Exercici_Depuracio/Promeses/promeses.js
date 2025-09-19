@@ -5,7 +5,7 @@ let dades = [
     {nom: "Laura", telefon: "633663366", edat: 17}
 ];
 
-function novaPersona(persona) 
+let novaPersona = (persona) =>
 {
     return new Promise((resolve, reject) => {
         for (let i = 0; i < dades.length; i++) 
@@ -17,11 +17,11 @@ function novaPersona(persona)
             }
         }
         dades.push(persona);
-        resolve(persona);
+        resolve("Nova persona afegida");
     });
 }
 
-function esborrarPersona(telefonBorrar) 
+let esborrarPersona = (telefonBorrar) =>
 {
     return new Promise((resolve, reject) => {
         let longitudInicial = dades.length;
@@ -38,7 +38,14 @@ function esborrarPersona(telefonBorrar)
     });
 }
 
-novaPersona({nom: "Juan", telefon:"965661564", edat: 60});
-novaPersona({nom: "Rodolfo", telefon:"910011001", edat: 20});
-esborrarPersona("910011001");
-console.log(dades);
+novaPersona({nom: "Juan", telefon:"965661564", edat: 60})
+.then(res =>{return console.log(res);})
+.catch(err => {return console.log(err);});
+
+novaPersona({nom: "Rodolfo", telefon:"910011001", edat: 20})
+.then(res =>{return console.log(res);})
+.catch(err => {return console.log(err);});
+
+esborrarPersona("910011001")
+.then(res => {return console.log(res);})
+.catch(err => {return console.log(err);});
