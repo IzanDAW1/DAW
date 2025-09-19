@@ -5,25 +5,16 @@ let dades = [
     {nom: "Laura", telefon: "633663366", edat: 17}
 ];
 
-function novaPersona(persona)
-{
-    let existix = false;
-    for(i=0;i<dades.length;i++)
-    {
-        if(dades[i].telefon === persona.telefon)
-        {
-            existix = true;
-        };
-    }
-    if(!existix)
+let novaPersona = persona => {
+    let existix = dades.filter(pers => pers.telefon === persona.telefon);
+    if(existix.length == 0)
     {
         dades.push(persona);
     }
 }
 
-function esborrarPersona(telefonBorrar)
-{
-    dades = dades.filter(persona => persona.telefon !== telefonBorrar);
+let esborrarPersona = pers => { 
+    dades = dades.filter(persona => persona.telefon !== pers);
 }
 
 novaPersona({nom: "Juan", telefon:"965661564", edat: 60});
