@@ -42,7 +42,7 @@ Libro.findById('68f0c7df7ad2841156a5c3c8')
 
 Libro.findByIdAndDelete('68f0c7df7ad2841156a5c3c8')
 .then(resultado => {
-    console.log('Libro con id 68f0c7df7ad2841156a5c3c8 borrado');
+    console.log('Libro con id' + resultado + ' eliminado.');
 })
 .catch((resultado) => {
     console.log("ERROR:", error);
