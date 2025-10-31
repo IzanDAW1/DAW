@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Restaurante = require('./restaurante');
 
 let contactoSchema = new mongoose.Schema({
     nombre: {
@@ -18,7 +19,15 @@ let contactoSchema = new mongoose.Schema({
         type: Number,
         min: 18,
         max: 120
-    }
+    },
+    restauranteFavorito: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'restaurantes'
+    },
+    mascotas: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'mascotas' 
+    }]
 });
 
 let Contacto = mongoose.model('contactos', contactoSchema);
