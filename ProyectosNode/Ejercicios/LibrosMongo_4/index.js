@@ -74,7 +74,7 @@ libro2.save().then(resultado => {
 
 let Autor = require(__dirname + '/models/autores');
 
-
+/*
 let autor1 = new Autor({
     nombre: "Arturo Pérez-Reverte",
     anyo: 1951
@@ -106,12 +106,21 @@ libro3.save().then(resultado => {
 }).catch(error => {
     console.log("ERROR:", error);
 });
-
-Libro.find({ precio: { $lt: 10 } }).then(resultadoLibros => {
+/*
+Libro.find({ precio: { $lt: 10 } })
+.then(resultadoLibros => {
     let idsAutores = resultadoLibros.map(libro => libro.autores);
-    Autor.find({ _id: { $in: idsAutores } }).then(resultadoAutores => {
+    Autor.find({ _id: { $in: idsAutores } })
+    .then(resultadoAutores => {
         console.log("Autores de los libros con precio menor a 10 euros:", resultadoAutores);
     }).catch(error => {
         console.log("ERROR buscando autores:", error);
     }); 
+});
+*/
+Libro.find().sort('precio').limit(3).select('titulo precio')
+.then(resultado => {
+    console.log("Los 3 libros más baratos son:", resultado);
+}).catch(error => {
+    console.log("ERROR:", error);
 });
