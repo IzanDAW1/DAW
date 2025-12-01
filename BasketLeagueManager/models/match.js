@@ -42,9 +42,10 @@ let playerStatsSchema = new mongoose.Schema({
 
 let matchSchema = new mongoose.Schema({
   tournament: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "tournaments",
+    type: String,
     required: true,
+    minlength: 3,
+    maxlength: 100,
   },
   date: {
     type: Date,
