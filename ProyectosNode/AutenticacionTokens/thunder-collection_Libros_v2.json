@@ -1,0 +1,141 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Libros",
+    "dateExported": "2023-07-13T15:00:55.904Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "a8defd74-511f-4a1e-8005-12763a321fe0",
+            "colId": "aa124102-9b6a-473c-b9d1-567f98915a84",
+            "containerId": "",
+            "name": "GET /libros",
+            "url": "localhost:8080/libros",
+            "method": "GET",
+            "sortNum": 10000,
+            "created": "2023-07-13T14:59:17.302Z",
+            "modified": "2023-07-13T14:59:17.302Z",
+            "headers": []
+        },
+        {
+            "_id": "2a71669e-c9bc-42fb-bf9c-fe422edb0382",
+            "colId": "aa124102-9b6a-473c-b9d1-567f98915a84",
+            "containerId": "",
+            "name": "GET /libros/:id",
+            "url": "localhost:8080/libros/5ac7e996c8b84402b70bb358",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-07-13T14:59:17.303Z",
+            "modified": "2023-07-13T14:59:17.303Z",
+            "headers": []
+        },
+        {
+            "_id": "869dec57-a0f0-4bea-a9d5-195c6961c74e",
+            "colId": "aa124102-9b6a-473c-b9d1-567f98915a84",
+            "containerId": "",
+            "name": "POST /libros",
+            "url": "localhost:8080/libros",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-07-13T14:59:17.304Z",
+            "modified": "2023-07-13T14:59:37.857Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\"titulo\":\"La tabla de Flandes\", \"editorial\":\"Anagrama\", \"precio\":7.50, \"autor\": \"64ad5bd4069236b7555af6b3\"}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d257b2e6-7ab6-48d5-ab36-fca7143e3f04",
+            "colId": "aa124102-9b6a-473c-b9d1-567f98915a84",
+            "containerId": "",
+            "name": "PUT /libros/:id",
+            "url": "localhost:8080/libros/5ac7e996c8b84402b70bb358",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2023-07-13T14:59:17.305Z",
+            "modified": "2023-07-13T14:59:45.372Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\"titulo\":\"Libro para modificar\", \"editorial\":\"Kalandraka\", \"precio\": 10.15, \"autor\": \"64ad5bd4069236b7555af6b3\"}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "5f54e726-e322-4576-a8f1-9e093e5023ed",
+            "colId": "aa124102-9b6a-473c-b9d1-567f98915a84",
+            "containerId": "",
+            "name": "DELETE /libros/:id",
+            "url": "localhost:8080/libros/5ac7e996c8b84402b70bb358",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2023-07-13T14:59:17.306Z",
+            "modified": "2023-07-13T14:59:17.306Z",
+            "headers": []
+        },
+        {
+            "_id": "257de389-15cc-42f1-b983-51bd2dd835e2",
+            "colId": "aa124102-9b6a-473c-b9d1-567f98915a84",
+            "containerId": "",
+            "name": "GET /autores",
+            "url": "localhost:8080/autores",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-07-13T14:59:17.307Z",
+            "modified": "2023-07-13T14:59:17.307Z",
+            "headers": []
+        },
+        {
+            "_id": "ff0bb233-5fd3-44f6-b13b-42cd0c280f5b",
+            "colId": "aa124102-9b6a-473c-b9d1-567f98915a84",
+            "containerId": "",
+            "name": "POST /autores",
+            "url": "localhost:8080/autores",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-07-13T14:59:17.308Z",
+            "modified": "2023-07-13T15:00:33.862Z",
+            "headers": [
+                {
+                    "name": "Content-Type",
+                    "value": "application/json"
+                }
+            ],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\"nombre\":\"Arturo Pérez Reverte\", \"anyoNacimiento\": 1955}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "de4a5575-330c-4167-a0c2-d22496e5e1eb",
+            "colId": "aa124102-9b6a-473c-b9d1-567f98915a84",
+            "containerId": "",
+            "name": "DELETE /autores",
+            "url": "localhost:8080/autores/5d7ac9b822f62c1b62d3cad5",
+            "method": "DELETE",
+            "sortNum": 80000,
+            "created": "2023-07-13T14:59:17.309Z",
+            "modified": "2023-07-13T14:59:17.309Z",
+            "headers": []
+        }
+    ]
+}
