@@ -1,9 +1,10 @@
 import express from "express";
 import Match from "../models/match.js";
+import { protegerRuta } from "../auth/auth.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const matches = await Match.find()
       .populate("homeTeam", "name")
@@ -28,7 +29,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", protegerRuta(['admin', 'manager']), async (req, res) => {
   try {
     if (
       !req.body.tournament ||
@@ -70,7 +71,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const match = await Match.findById(req.params.id)
       .populate("homeTeam")
@@ -96,7 +97,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", protegerRuta(['admin', 'manager']), async (req, res) => {
   try {
     const match = await Match.findByIdAndRemove(req.params.id);
 

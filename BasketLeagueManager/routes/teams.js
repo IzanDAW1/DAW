@@ -2,10 +2,11 @@ import express from "express";
 import Team from "../models/team.js";
 import Player from "../models/player.js";
 import Match from "../models/match.js";
+import { protegerRuta } from "../auth/auth.js";
 
 let router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const teams = await Team.find();
     if (teams.length === 0) {
@@ -27,7 +28,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", protegerRuta(['admin']), async (req, res) => {
   try {
     if (!req.body.name) {
       return res.status(400).json({
@@ -63,7 +64,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", protegerRuta(['admin']), async (req, res) => {
   try {
     const teamToDelete = await Team.findById(req.params.id);
 
@@ -98,7 +99,7 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const team = await Team.findById(req.params.id).populate("roster.player");
 
@@ -132,7 +133,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/:id/roster", async (req, res) => {
+router.post("/:id/roster", protegerRuta(['admin', 'manager']), async (req, res) => {
   try {
     const team = await Team.findById(req.params.id);
     if (!team) {
@@ -193,7 +194,7 @@ router.post("/:id/roster", async (req, res) => {
   }
 });
 
-router.delete("/:id/roster/:playerId", async (req, res) => {
+router.delete("/:id/roster/:playerId", protegerRuta(['admin', 'manager']), async (req, res) => {
   try {
     const team = await Team.findById(req.params.id);
 

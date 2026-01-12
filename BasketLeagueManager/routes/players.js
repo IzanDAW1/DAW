@@ -1,10 +1,11 @@
 import express from "express";
 import Player from "../models/player.js";
 import Team from "../models/team.js";
+import { protegerRuta } from "../auth/auth.js"; 
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const players = await Player.find();
     if (players.length === 0) {
@@ -26,7 +27,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", protegerRuta(['admin']), async (req, res) => {
   try {
     if (
       !req.body.nickname ||
@@ -73,7 +74,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.get("/find", async (req, res) => {
+router.get("/find", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     if (!req.query.name) {
       return res.status(400).json({
@@ -103,7 +104,7 @@ router.get("/find", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const players = await Player.findById(req.params.id);
     if (players.length === 0) {
@@ -125,7 +126,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", protegerRuta(['admin']), async (req, res) => {
   try {
     const validatePlayer = await Player.findById(req.params.id);
 
@@ -169,7 +170,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", protegerRuta(['admin']), async (req, res) => {
   try {
     const validatePlayer = await Player.findById(req.params.id);
 
