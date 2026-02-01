@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>
+            {% block titulo %}{% endblock %}
+        </title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+    </head>
+    <body class="bg-light min-vh-100 d-flex flex-column">
+        <header class="bg-gradient bg-primary text-white shadow-lg py-5 mb-5">
+            <div class="container">
+                {% include "menu.njk" %}
+            </div>
+        </header>
+        <main class="container my-5 flex-grow-1">
+            <div class="bg-white rounded-3 shadow-sm p-5"> {% block contenido %}{% endblock %}
+                </div>
+            </main>
+            <footer class="bg-dark text-white text-center py-4 mt-5">
+                <p class="mb-0">&copy; 2026 ContactosWeb. Todos los derechos reservados.</p>
+            </footer>
+            <script src="/js/bootstrap.bundle.min.js"></script>
+        </body>
+    </html>

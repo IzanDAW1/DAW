@@ -1,0 +1,17 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Ficha de libro{% endblock %}
+
+{% block contenido %}
+    <table class="table table-striped table-bordered table-hover bg-white">
+        <tbody>
+            {% for llibre in llibres %}
+            <tr>
+                <td>Titulo: {{ llibre.titol }}</td>
+                <td>Editorial: {{ llibre.editorial }}</td>
+                <td>Precio: {{ llibre.precio }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock contenido %}

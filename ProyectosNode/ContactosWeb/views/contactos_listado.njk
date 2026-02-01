@@ -1,0 +1,27 @@
+{% extends "base.njk" %}
+{% block titulo %}Contactos | Listado{% endblock %}
+{% block contenido %}
+    <h1 class="mb-4">Listado de contactos</h1>
+    {% if contactos.length > 0 %}
+        <div class="row g-3">
+            {% for contacto in contactos %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary fw-bold">{{ contacto.nombre }}</h5>
+                            <p class="card-text text-muted small mb-3">ID: {{ contacto._id }}</p>
+                            <a href="/contactos/{{ contacto._id }}" class="btn btn-primary btn-sm w-100">
+                                👁️ Ver información
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            📭 No hay contactos que mostrar.
+            <a href="/contactos/nuevo" class="alert-link">Crear uno nuevo</a>
+        </div>
+    {% endif %}
+{% endblock %}

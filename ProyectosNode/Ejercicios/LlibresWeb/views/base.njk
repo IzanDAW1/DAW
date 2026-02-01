@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            {% block titulo %}
+            {% endblock %}
+        </title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+    </head>
+    <body class="d-flex flex-column min-vh-100">
+        <div class="container bg-success p-4 mb-4"> 
+            {% block contenido %}
+            {% endblock %}
+        </div>
+        <footer>
+            <div class="container mt-auto">
+                <p class="text-center">Mi Aplicación &copy; 2026</p>
+        </footer>
+    </body>
+</html>

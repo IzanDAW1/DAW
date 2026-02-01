@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Error</title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+    </head>
+    <body class="bg-light d-flex align-items-center" style="min-height: 100vh;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card border-0 shadow-lg">
+                        <div class="card-body text-center p-5">
+                            <div class="display-1 text-danger mb-3">⚠️</div>
+                            <h1 class="card-title text-danger fw-bold mb-3">Error</h1>
+                            <div class="alert alert-danger" role="alert">
+                                {% if error %}
+                                    {{ error }}
+                                {% else %}
+                                    Error en la aplicación
+                                {% endif %}
+                            </div>
+                            <a href="/" class="btn btn-primary btn-lg mt-3">Volver al inicio</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
