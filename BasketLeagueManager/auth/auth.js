@@ -32,8 +32,8 @@ let protegerRuta = (rolesPermitidos) => {
   };
 };
 
-module.exports = {
-  generarToken: generarToken,
-  validarToken: validarToken,
-  protegerRuta: protegerRuta,
+export {
+  generarToken,
+  validarToken,
+  protegerRuta
 };

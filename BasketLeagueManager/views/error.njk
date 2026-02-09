@@ -1,0 +1,27 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Error{% endblock %}
+
+{% block contenido %}
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 60vh;">
+        <div class="card shadow-lg border-danger" style="max-width: 500px; width: 100%;">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Error</h4>
+            </div>
+            <div class="card-body text-center">
+                <div class="display-1 text-danger mb-3">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </div>
+                <h5 class="card-title text-danger">Ha ocurrido un problema</h5>
+                <p class="card-text lead">
+                    {% if error %}
+                        {{ error }}
+                    {% else %}
+                        Error en la aplicación
+                    {% endif %}
+                </p>
+                <a href="/" class="btn btn-outline-danger mt-3">Volver al Inicio</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

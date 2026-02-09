@@ -5,25 +5,12 @@ import { protegerRuta } from "../auth/auth.js";
 
 const router = express.Router();
 
-router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const players = await Player.find();
-    if (players.length === 0) {
-      return res.status(404).json({
-        error: "No hay jugadores en el sistema",
-        result: null,
-      });
-    }
-
-    return res.status(200).json({
-      error: null,
-      result: players,
-    });
+    res.render('players_list', { players: players });
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render('error', { error: "Error interno del servidor" });
   }
 });
 

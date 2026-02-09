@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block titulo %}Basket League Manager{% endblock %}</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+    </head>
+    <body class="d-flex flex-column min-vh-100">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+            <div class="container">
+                <a class="navbar-brand" href="/">BasketLeagueManager</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    {% include "menu.njk" %}
+                </div>
+            </div>
+        </nav>
+
+        <div class="container flex-grow-1">
+            {% block contenido %}
+
+            {% endblock %}
+        </div>
+
+        <footer class="bg-light text-center text-lg-start mt-4 py-3 border-top">
+            <div class="container">
+                <p class="mb-0 text-muted">&copy; 2026 Basket League Manager</p>
+            </div>
+        </footer>
+
+        <script src="/public/bootstrap/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
