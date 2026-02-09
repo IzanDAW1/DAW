@@ -14,7 +14,7 @@ let validarToken = (token) => {
 
 let protegerRuta = (rolesPermitidos) => {
   return (req, res, next) => {
-    let token = req.headers["authorization"];
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
     if (token && token.startsWith("Bearer ")) {
       token = token.slice(7);
@@ -25,15 +25,13 @@ let protegerRuta = (rolesPermitidos) => {
           req.user = usuario;
           next();
         } else {
-          res.status(403).send({ error: "Acceso no autorizado", result: null });
+          res.redirect("/auth/login");
         }
       }
+    } else {
+      res.redirect("/auth/login");
     }
   };
 };
 
-export {
-  generarToken,
-  validarToken,
-  protegerRuta
-};
+export { generarToken, validarToken, protegerRuta };

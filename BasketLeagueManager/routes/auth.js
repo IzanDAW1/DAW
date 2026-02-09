@@ -4,6 +4,10 @@ import { generarToken } from "../auth/auth.js";
 
 const router = express.Router();
 
+router.get("/login" , (req,res) =>{
+  res.render('login');
+})
+
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findOne({
@@ -13,6 +17,11 @@ router.post("/login", async (req, res) => {
 
     if (user) {
       const token = generarToken(user.login, user.rol);
+      res.cookie("token", token, {
+        httpOnly: true,
+        sameSite: "lax",
+      });
+      res.redirect("/");
       return res.status(200).json({
         error: null,
         result: token,

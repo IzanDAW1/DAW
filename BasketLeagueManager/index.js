@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import nunjucks from "nunjucks"; 
 import path from "path";
 import { fileURLToPath } from "url";
+import cookieParser from "cookie-parser";
 
 import players from "./routes/players.js";
 import teams from "./routes/teams.js";
@@ -22,6 +23,7 @@ nunjucks.configure('views', {
 });
 app.set('view engine', 'njk');
 
+app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));

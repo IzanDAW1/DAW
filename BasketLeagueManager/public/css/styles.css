@@ -1,0 +1,116 @@
+/* Basketball Theme Variables - Modern Arena */
+:root {
+    --basket-orange: #ff6b00;
+    --basket-orange-dark: #cc5500;
+    --basket-navy: #0f172a; /* Deep Navy */
+    --basket-blue-light: #1e293b;
+    --text-light: #ffffff;
+    --text-dark: #334155;
+    --bg-light: #f1f5f9; /* Slate 100 */
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand {
+    font-family: 'Oswald', sans-serif; /* Condensed sporty font */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Navbar Customization */
+.navbar-custom {
+    background-color: var(--basket-navy) !important;
+    border-bottom: 4px solid var(--basket-orange);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+}
+
+.navbar-custom .navbar-brand {
+    color: var(--text-light) !important;
+    font-size: 2.2rem;
+    font-style: italic;
+    text-shadow: 2px 2px 0px var(--basket-orange);
+}
+
+.navbar-custom .nav-link {
+    color: rgba(255,255,255,0.7) !important;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+    color: var(--basket-orange) !important;
+    transform: translateY(-2px);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--basket-orange);
+    border: none;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 2px; /* Sporty sharp corners */
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--basket-orange-dark);
+    transform: skew(-5deg); /* Dynamic movement */
+    box-shadow: 0 4px 6px rgba(255, 107, 0, 0.3);
+}
+
+.btn-outline-primary {
+    color: var(--basket-navy);
+    border: 2px solid var(--basket-navy);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--basket-navy);
+    border-color: var(--basket-navy);
+    color: var(--text-light);
+}
+
+/* Cards */
+.card-custom {
+    border: none;
+    background-color: #ffffff;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-header-custom {
+    background-color: var(--basket-navy);
+    color: var(--text-light);
+    border-bottom: 3px solid var(--basket-orange);
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.7rem;
+    letter-spacing: 1px;
+}
+
+/* Tables */
+.table-hover tbody tr:hover {
+    background-color: rgba(15, 23, 42, 0.05); /* Navy tint */
+}
+
+.table-dark {
+    --bs-table-bg: var(--basket-navy);
+    --bs-table-striped-bg: var(--basket-blue-light);
+    border-bottom: 3px solid var(--basket-orange);
+}
+
+/* Footer */
+footer {
+    background-color: var(--basket-navy) !important;
+    color: rgba(255,255,255,0.6) !important;
+    border-top: none !important;
+}
+

@@ -5,7 +5,7 @@ import { protegerRuta } from "../auth/auth.js";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const players = await Player.find();
     res.render('players_list', { players: players });
