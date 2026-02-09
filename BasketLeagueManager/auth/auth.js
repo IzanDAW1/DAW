@@ -12,12 +12,15 @@ let validarToken = (token) => {
   } catch (e) {}
 };
 
-let protegerRuta = (rolesPermitidos) => {
+const protegerRuta = (rolesPermitidos) => {
   return (req, res, next) => {
-    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+    let token = req.cookies.token;
 
-    if (token && token.startsWith("Bearer ")) {
-      token = token.slice(7);
+    if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+      token = req.headers.authorization.split(" ")[1];
+    }
+    
+    if (token) {
       let usuario = validarToken(token);
 
       if (usuario) {
@@ -27,6 +30,8 @@ let protegerRuta = (rolesPermitidos) => {
         } else {
           res.redirect("/auth/login");
         }
+      } else {
+        res.redirect("/auth/login");
       }
     } else {
       res.redirect("/auth/login");

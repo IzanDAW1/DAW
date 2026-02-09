@@ -23,10 +23,11 @@ nunjucks.configure('views', {
 });
 app.set('view engine', 'njk');
 
-app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
+app.use(cookieParser());
 
 app.use("/players", players);
 app.use("/teams", teams);

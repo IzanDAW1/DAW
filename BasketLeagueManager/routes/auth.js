@@ -4,9 +4,9 @@ import { generarToken } from "../auth/auth.js";
 
 const router = express.Router();
 
-router.get("/login" , (req,res) =>{
-  res.render('login');
-})
+router.get("/login", (req, res) => {
+  res.render("login");
+});
 
 router.post("/login", async (req, res) => {
   try {
@@ -33,11 +33,17 @@ router.post("/login", async (req, res) => {
       });
     }
   } catch (error) {
+    console.error("Error en login:", error);
     return res.status(500).json({
       error: "Error interno del servidor",
       result: null,
     });
   }
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/login");
 });
 
 export default router;
