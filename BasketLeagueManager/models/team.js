@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 let rosterSchema = new mongoose.Schema({
   player: {
-    type: [mongoose.Schema.Types.ObjectId],
+    type: mongoose.Schema.Types.ObjectId,
     ref: "players",
   },
   joinDate: {

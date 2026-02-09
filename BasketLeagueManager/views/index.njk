@@ -1,0 +1,35 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Inicio - Basket League Manager{% endblock %}
+
+{% block contenido %}
+    <div class="p-5 mb-4 bg-light rounded-3 shadow-sm border-start border-5 border-warning card-custom">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold text-dark"><i class="bi bi-trophy-fill text-warning"></i> Bienvenido a Basket League Manager</h1>
+            <p class="col-md-8 fs-4 mt-3">Gestiona tu liga de baloncesto como un profesional. Administra jugadores, equipos y partidos en una interfaz moderna y dinámica.</p>
+            <hr class="my-4">
+            <p>Accede rápidamente a las secciones principales:</p>
+            <div class="d-grid gap-2 d-md-block">
+                <a href="/players" class="btn btn-primary btn-lg px-4 me-md-2"><i class="bi bi-people-fill"></i> Gestionar Jugadores</a>
+                <a href="/teams" class="btn btn-outline-primary btn-lg px-4"><i class="bi bi-shield-shaded"></i> Ver Equipos</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row align-items-md-stretch">
+        <div class="col-md-6">
+            <div class="h-100 p-5 text-white bg-dark rounded-3 shadow-lg border-bottom border-5 border-warning">
+                <h2 class="text-warning"><i class="bi bi-bar-chart-fill"></i> Estadísticas en Tiempo Real</h2>
+                <p>Sigue el rendimiento de tus jugadores y equipos con estadísticas actualizadas al instante. Toma decisiones basadas en datos.</p>
+                <button class="btn btn-outline-warning" type="button">Ver Estadísticas</button>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="h-100 p-5 bg-white border rounded-3 shadow-sm card-custom">
+                <h2 class="text-dark"><i class="bi bi-calendar-check-fill text-primary"></i> Calendario de Partidos</h2>
+                <p>Organiza la temporada, programa enfrentamientos y mantén a todos informados sobre los próximos grandes juegos.</p>
+                <a href="/matches" class="btn btn-outline-secondary" type="button">Ir al Calendario</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

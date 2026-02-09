@@ -1,0 +1,84 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Detalles del Partido{% endblock %}
+
+{% block contenido %}
+    <!-- Match Header -->
+    <div class="card card-custom mb-4 border-0 shadow-lg">
+        <div class="card-header card-header-custom text-center py-3">
+            {{ match.tournament }} - {{ match.stage }}
+        </div>
+        <div class="card-body p-4">
+            <div class="row align-items-center text-center">
+                <div class="col-md-4">
+                    <h3 class="fw-bold mb-0 text-dark">{{ match.homeTeam.name }}</h3>
+                </div>
+                <div class="col-md-4">
+                    <div class="display-3 fw-bold text-basket-orange">
+                        {{ match.homeScore }} <span class="text-muted">:</span> {{ match.awayScore }}
+                    </div>
+                    <p class="text-muted mb-0"><i class="bi bi-calendar-event"></i> {{ match.date.toLocaleDateString() }}</p>
+                </div>
+                <div class="col-md-4">
+                    <h3 class="fw-bold mb-0 text-dark">{{ match.awayTeam.name }}</h3>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="/matches" class="btn btn-outline-secondary">Volver al Calendario</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Stats -->
+    <div class="card card-custom shadow-sm">
+        <div class="card-header bg-dark text-white border-bottom border-warning">
+            <h4 class="mb-0"><i class="bi bi-bar-chart-fill text-warning me-2"></i> Estadísticas de Jugadores</h4>
+        </div>
+        <div class="card-body p-0">
+            {% if match.playerStats.length > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col" class="ps-4">Jugador</th>
+                                <th scope="col" class="text-center">PTS</th>
+                                <th scope="col" class="text-center">REB</th>
+                                <th scope="col" class="text-center">AST</th>
+                                <th scope="col" class="text-center">ROB</th>
+                                <th scope="col" class="text-center">FAL</th>
+                                <th scope="col" class="text-center">MVP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in match.playerStats %}
+                                <tr>
+                                    <td class="ps-4">
+                                        <strong>{{ stat.player.name }}</strong>
+                                        <br>
+                                        <small class="text-muted">{{ stat.player.nickname }}</small>
+                                    </td>
+                                    <td class="text-center fw-bold">{{ stat.points }}</td>
+                                    <td class="text-center">{{ stat.rebounds }}</td>
+                                    <td class="text-center">{{ stat.assists }}</td>
+                                    <td class="text-center">{{ stat.steals }}</td>
+                                    <td class="text-center">{{ stat.fouls }}</td>
+                                    <td class="text-center">
+                                        {% if stat.mvp %}
+                                            <i class="bi bi-trophy-fill text-warning fs-5" title="MVP del Partido"></i>
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="p-5 text-center text-muted">
+                    <p>No hay estadísticas registradas para este partido.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

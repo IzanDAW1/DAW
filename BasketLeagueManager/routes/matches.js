@@ -11,21 +11,13 @@ router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => 
       .populate("awayTeam", "name");
 
     if (matches.length === 0) {
-      return res.status(404).json({
-        error: "No existen partidos registrados",
-        result: null,
-      });
+      res.render('error' , {error: 'No existen partidos registrado'});
     }
 
-    return res.status(200).json({
-      error: null,
-      result: matches,
-    });
+    res.render("matches_list" , {matches: matches});
+
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render("error",{error:'Error interno del servidor'});
   }
 });
 
@@ -79,21 +71,12 @@ router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) 
       .populate("playerStats.player");
 
     if (!match) {
-      return res.status(404).json({
-        error: "Partido no encontrado",
-        result: null,
-      });
+      res.render('error' , {error: 'Partido no encontrado'});
     }
 
-    return res.status(200).json({
-      error: null,
-      result: match,
-    });
+    res.render('match_detail' , {match: match})
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render('error' , {error: 'Error interno del servidor'});
   }
 });
 

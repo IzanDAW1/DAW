@@ -1,0 +1,57 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Lista de Equipos{% endblock %}
+
+{% block contenido %}
+    <div class="d-flex justify-content-between align-items-center my-4">
+        <h1 class="h2">Listado de Equipos</h1>
+        <a href="/teams/new" class="btn btn-primary disabled" aria-disabled="true">Nuevo Equipo</a>
+    </div>
+    
+    {% if teams.length > 0 %}
+        <div class="table-responsive shadow-sm rounded card-custom">
+            <table class="table table-striped table-hover mb-0 align-middle">
+                <thead class="table-dark text-uppercase">
+                    <tr>
+                        <th scope="col" class="py-3 ps-4">Nombre</th>
+                        <th scope="col" class="py-3">Fundado</th>
+                        <th scope="col" class="py-3">Miembros</th>
+                        <th scope="col" class="text-end py-3 pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    {% for team in teams %}
+                        <tr>
+                            <td class="fw-bold ps-4 text-warning">{{ team.name }}</td>
+                            <td>
+                                {% if team.foundedAt %}
+                                    {{ team.foundedAt.toLocaleDateString() }}
+                                {% else %}
+                                    <span class="text-muted small">Desc.</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">{{ team.roster.length }}</span>
+                            </td>
+                            <td class="text-end pe-4">
+                                <div class="btn-group" role="group">
+                                    <a href="/teams/{{ team.id }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i> Ver
+                                    </a>
+                                    <a href="/teams/{{ team.id }}/delete" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Seguro que quieres eliminar este equipo?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info shadow-sm" role="alert">
+            <h4 class="alert-heading">¡Vaya!</h4>
+            <p>No hay equipos en la liga actualmente.</p>
+        </div>
+    {% endif %}
+{% endblock %}

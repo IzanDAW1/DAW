@@ -34,9 +34,17 @@
                                 </span>
                             </td>
                             <td class="text-end pe-4">
-                                <a href="/players/{{ player.id }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-eye"></i> Ver Ficha
-                                </a>
+                                <div class="btn-group" role="group">
+                                    <a href="/players/{{ player.id }}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye"></i> Ver
+                                    </a>
+                                    <a href="/players/{{ player.id }}/edit" class="btn btn-sm btn-outline-warning">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <a href="/players/{{ player.id }}/delete" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Eliminar jugador?')">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}

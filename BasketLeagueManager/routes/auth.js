@@ -1,6 +1,6 @@
 import express from "express";
-import User from "../models/users.js";
 import { generarToken } from "../auth/auth.js";
+import User from "../models/users.js";
 
 const router = express.Router();
 
@@ -22,22 +22,12 @@ router.post("/login", async (req, res) => {
         sameSite: "lax",
       });
       res.redirect("/");
-      return res.status(200).json({
-        error: null,
-        result: token,
-      });
     } else {
-      return res.status(401).json({
-        error: "Login incorrecto",
-        result: null,
-      });
+      res.render('error', { error: "Login incorrecto" });
     }
   } catch (error) {
     console.error("Error en login:", error);
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render('error', { error: "Error interno del servidor" });
   }
 });
 

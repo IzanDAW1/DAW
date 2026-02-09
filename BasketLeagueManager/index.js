@@ -35,7 +35,7 @@ app.use("/matches", matches);
 app.use('/auth', auth);
 
 app.get('/', (req, res) => {
-    res.render('base');
+    res.render('index');
 });
 
 app.listen(8080, () => {

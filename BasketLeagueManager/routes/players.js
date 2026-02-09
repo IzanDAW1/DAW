@@ -1,20 +1,24 @@
 import express from "express";
 import Player from "../models/player.js";
 import Team from "../models/team.js";
-import { protegerRuta } from "../auth/auth.js"; 
+import { protegerRuta } from "../auth/auth.js";
 
 const router = express.Router();
 
-router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
-  try {
-    const players = await Player.find();
-    res.render('players_list', { players: players });
-  } catch (error) {
-    res.render('error', { error: "Error interno del servidor" });
-  }
-});
+router.get(
+  "/",
+  protegerRuta(["admin", "manager", "user"]),
+  async (req, res) => {
+    try {
+      const players = await Player.find();
+      res.render("players_list", { players: players });
+    } catch (error) {
+      res.render("error", { error: "Error interno del servidor" });
+    }
+  },
+);
 
-router.post("/", protegerRuta(['admin']), async (req, res) => {
+router.post("/", protegerRuta(["admin"]), async (req, res) => {
   try {
     if (
       !req.body.nickname ||
@@ -61,59 +65,59 @@ router.post("/", protegerRuta(['admin']), async (req, res) => {
   }
 });
 
-router.get("/find", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
-  try {
-    if (!req.query.name) {
-      return res.status(400).json({
-        error: "Falta el parámetro de búsqueda",
+router.get(
+  "/find",
+  protegerRuta(["admin", "manager", "user"]),
+  async (req, res) => {
+    try {
+      if (!req.query.name) {
+        return res.status(400).json({
+          error: "Falta el parámetro de búsqueda",
+          result: null,
+        });
+      }
+      const players = await Player.find({
+        name: { $regex: req.query.name, $options: "i" },
+      });
+      if (players.length === 0) {
+        return res.status(404).json({
+          error: "No existen jugadores con ese nombre",
+          result: null,
+        });
+      }
+
+      return res.status(200).json({
+        error: null,
+        result: players,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error: "Error interno del servidor",
         result: null,
       });
     }
-    const players = await Player.find({
-      name: { $regex: req.query.name, $options: "i" },
-    });
-    if (players.length === 0) {
-      return res.status(404).json({
-        error: "No existen jugadores con ese nombre",
-        result: null,
-      });
+  },
+);
+
+router.get(
+  "/:id",
+  protegerRuta(["admin", "manager", "user"]),
+  async (req, res) => {
+    try {
+      const player = await Player.findById(req.params.id);
+
+      if (!player) {
+        return res.render("error", { error: "No existe ese jugador" });
+      }
+      
+      res.render("player_detail", { player: player });
+    } catch (error) {
+      res.render("error", { error: "Error interno del servidor" });
     }
+  },
+);
 
-    return res.status(200).json({
-      error: null,
-      result: players,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
-  }
-});
-
-router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
-  try {
-    const players = await Player.findById(req.params.id);
-    if (players.length === 0) {
-      return res.status(404).json({
-        error: "No existe ese jugador en el sistema",
-        result: null,
-      });
-    }
-
-    return res.status(200).json({
-      error: null,
-      result: players,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
-  }
-});
-
-router.put("/:id", protegerRuta(['admin']), async (req, res) => {
+router.put("/:id", protegerRuta(["admin"]), async (req, res) => {
   try {
     const validatePlayer = await Player.findById(req.params.id);
 
@@ -157,7 +161,7 @@ router.put("/:id", protegerRuta(['admin']), async (req, res) => {
   }
 });
 
-router.delete("/:id", protegerRuta(['admin']), async (req, res) => {
+router.delete("/:id", protegerRuta(["admin"]), async (req, res) => {
   try {
     const validatePlayer = await Player.findById(req.params.id);
 

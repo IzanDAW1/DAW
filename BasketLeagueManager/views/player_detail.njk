@@ -1,0 +1,35 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Ficha del Jugador{% endblock %}
+
+{% block contenido %}
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card card-custom mb-3" style="max-width: 540px; width: 100%;">
+            <div class="card-header card-header-custom text-center">
+                {{ player.name }}
+            </div>
+            <div class="row g-0">
+                <div class="col-md-4 d-flex align-items-center justify-content-center bg-light">
+                    <!-- Placeholder generic avatar if no image -->
+                    <div class="display-1 text-secondary"><i class="bi bi-person-bounding-box"></i></div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning fw-bold">{{ player.nickname }}</h5>
+                        <p class="card-text"><i class="bi bi-globe2 text-secondary"></i> <strong>País:</strong> {{ player.country }}</p>
+                        <p class="card-text"><i class="bi bi-calendar3 text-secondary"></i> <strong>Nacimiento:</strong> {{ player.birthDate.toLocaleDateString() }}</p>
+                        <p class="card-text">
+                            <i class="bi bi-award text-secondary"></i> <strong>Rol:</strong> 
+                            <span class="badge bg-dark text-warning border border-warning">{{ player.role }}</span>
+                        </p>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="/players" class="btn btn-outline-secondary btn-sm">Volver</a>
+                            <a href="/players/{{ player.id }}/edit" class="btn btn-primary btn-sm">Editar</a>
+                            <a href="/players/{{ player.id }}/delete" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que quieres eliminar a este jugador?')">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

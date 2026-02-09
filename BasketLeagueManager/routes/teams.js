@@ -9,22 +9,15 @@ let router = express.Router();
 router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const teams = await Team.find();
-    if (teams.length === 0) {
-      return res.status(404).json({
-        error: "No se han encontrado equipos.",
-        result: null,
-      });
+
+    if(!teams)
+    {
+      res.render('error', { error: "No hay equipos" });
     }
 
-    return res.status(200).json({
-      error: null,
-      result: teams,
-    });
+    res.render('teams_list', { teams: teams });
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render('error', { error: "Error interno del servidor" });
   }
 });
 
@@ -64,6 +57,35 @@ router.post("/", protegerRuta(['admin']), async (req, res) => {
   }
 });
 
+router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
+  try {
+    const team = await Team.findById(req.params.id).populate("roster.player");
+
+    if (!team) {
+      res.render('error', { error: "No existe ese equipo en el sistema" });
+    }
+
+    const activeMembers = team.roster.filter(
+      (member) => member && member.active
+    );
+
+    const result = {
+      _id: team._id,
+      name: team.name,
+      foundedAt: team.foundedAt,
+      roster: activeMembers,
+    };
+
+    res.render('team_detail', { result: result });
+
+  } catch (error) {
+    return res.status(500).json({
+      error: "Error interno del servidor",
+      result: null,
+    });
+  }
+});
+
 router.delete("/:id", protegerRuta(['admin']), async (req, res) => {
   try {
     const teamToDelete = await Team.findById(req.params.id);
@@ -90,40 +112,6 @@ router.delete("/:id", protegerRuta(['admin']), async (req, res) => {
     return res.status(200).json({
       error: null,
       result: deletedTeam,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
-  }
-});
-
-router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
-  try {
-    const team = await Team.findById(req.params.id).populate("roster.player");
-
-    if (!team) {
-      return res.status(404).json({
-        error: "No existe ese equipo en el sistema",
-        result: null,
-      });
-    }
-
-    const activeMembers = team.roster.filter(
-      (member) => member && member.active
-    );
-
-    const result = {
-      _id: team._id,
-      name: team.name,
-      foundedAt: team.foundedAt,
-      roster: activeMembers,
-    };
-
-    return res.status(200).json({
-      error: null,
-      result: result,
     });
   } catch (error) {
     return res.status(500).json({
