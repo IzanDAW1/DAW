@@ -122,6 +122,7 @@ router.delete("/:id", protegerRuta(["admin"]), async (req, res) => {
   }
 });
 
+//hecho
 router.post("/:id/roster", protegerRuta(["admin", "manager"]), async (req, res) => {
   try {
     let errors = {};
@@ -176,7 +177,9 @@ router.post("/:id/roster", protegerRuta(["admin", "manager"]), async (req, res) 
   }
 });
 
+//hecho
 router.get('/:id/roster/new', protegerRuta(["admin"]), async (req,res) => {
+  //Le he metido lo de poder ver todos los jugadores disponibles por que lo veo mas coherenete y no me costaba nada ponerlo
   try {
     const team = await Team.findById(req.params.id);
     if (!team) {

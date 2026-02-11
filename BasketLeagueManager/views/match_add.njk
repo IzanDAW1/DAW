@@ -1,0 +1,108 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Nuevo Partido{% endblock %}
+
+{% block contenido %}
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card card-custom mb-3" style="max-width: 800px; width: 100%;">
+            <div class="card-header card-header-custom text-center">
+                <h3 class="mb-0 text-white">Registrar Nuevo Partido</h3>
+            </div>
+            <div class="card-body">
+                <form action="/matches" method="post">
+                    
+                    {% if errors.general %}
+                        <div class="alert alert-danger">{{ errors.general }}</div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="tournament" class="form-label text-black fw-bold">Torneo</label>
+                            <input type="text" class="form-control {% if errors.tournament %}is-invalid{% endif %}" id="tournament" name="tournament" required minlength="3" maxlength="100" placeholder="Ej: Liga ACB" value="{{ data.tournament }}">
+                            {% if errors.tournament %}
+                                <div class="invalid-feedback">{{ errors.tournament }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="date" class="form-label text-black fw-bold">Fecha</label>
+                            <input type="date" class="form-control {% if errors.date %}is-invalid{% endif %}" id="date" name="date" required value="{{ data.date }}">
+                            {% if errors.date %}
+                                <div class="invalid-feedback">{{ errors.date }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="stage" class="form-label text-black fw-bold">Fase</label>
+                        <select class="form-select {% if errors.stage %}is-invalid{% endif %}" id="stage" name="stage" required>
+                            <option value="" selected disabled>Selecciona una fase...</option>
+                            <option value="Group" {% if data.stage == 'Group' %}selected{% endif %}>Fase de Grupos</option>
+                            <option value="Quarterfinal" {% if data.stage == 'Quarterfinal' %}selected{% endif %}>Cuartos de Final</option>
+                            <option value="Semifinal" {% if data.stage == 'Semifinal' %}selected{% endif %}>Semifinal</option>
+                            <option value="Final" {% if data.stage == 'Final' %}selected{% endif %}>Final</option>
+                        </select>
+                        {% if errors.stage %}
+                            <div class="invalid-feedback">{{ errors.stage }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row align-items-center">
+                        <div class="col-md-5 mb-3">
+                            <label for="homeTeam" class="form-label text-black fw-bold">Equipo Local</label>
+                            <select class="form-select {% if errors.homeTeam %}is-invalid{% endif %}" id="homeTeam" name="homeTeam" required>
+                                <option value="" selected disabled>Selecciona equipo...</option>
+                                {% for team in teams %}
+                                    <option value="{{ team.id }}" {% if data.homeTeam == team.id %}selected{% endif %}>{{ team.name }}</option>
+                                {% endfor %}
+                            </select>
+                            {% if errors.homeTeam %}
+                                <div class="invalid-feedback">{{ errors.homeTeam }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-2 text-center mb-3">
+                            <span class="fw-bold">VS</span>
+                        </div>
+
+                        <div class="col-md-5 mb-3">
+                            <label for="awayTeam" class="form-label text-black fw-bold">Equipo Visitante</label>
+                            <select class="form-select {% if errors.awayTeam %}is-invalid{% endif %}" id="awayTeam" name="awayTeam" required>
+                                <option value="" selected disabled>Selecciona equipo...</option>
+                                {% for team in teams %}
+                                    <option value="{{ team.id }}" {% if data.awayTeam == team.id %}selected{% endif %}>{{ team.name }}</option>
+                                {% endfor %}
+                            </select>
+                            {% if errors.awayTeam %}
+                                <div class="invalid-feedback">{{ errors.awayTeam }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="homeScore" class="form-label text-black fw-bold">Puntos Local</label>
+                            <input type="number" class="form-control {% if errors.homeScore %}is-invalid{% endif %}" id="homeScore" name="homeScore" required min="0" value="{{ data.homeScore }}">
+                             {% if errors.homeScore %}
+                                <div class="invalid-feedback">{{ errors.homeScore }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="awayScore" class="form-label text-black fw-bold">Puntos Visitante</label>
+                            <input type="number" class="form-control {% if errors.awayScore %}is-invalid{% endif %}" id="awayScore" name="awayScore" required min="0" value="{{ data.awayScore }}">
+                             {% if errors.awayScore %}
+                                <div class="invalid-feedback">{{ errors.awayScore }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="/matches" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar Partido</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

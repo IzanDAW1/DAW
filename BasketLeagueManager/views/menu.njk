@@ -13,6 +13,11 @@
     <li class="nav-item">
         <a class="nav-link" href="/matches">Partidos</a>
     </li>
+    {% if user.rol == 'admin' or user.rol == 'manager' %}
+        <li class="nav-item">
+            <a class="nav-link" href="/matches/new">Añadir Partido</a>
+        </li>
+    {% endif %}
 </ul>
 <form class="d-flex" role="search" action="/players/find" method="get">
     <input class="form-control me-2" type="search" name="name" placeholder="Buscar jugador..." aria-label="Search">
