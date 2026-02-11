@@ -6,28 +6,19 @@ import { protegerRuta } from "../auth/auth.js";
 const router = express.Router();
 
 //hecho
-router.get(
-  "/",
-  protegerRuta(["admin", "manager", "user"]),
-  async (req, res) => {
-    try {
-      const players = await Player.find();
-      res.render("players_list", { players: players, user: req.user });
-    } catch (error) {
-      res.render("error", { error: "Error interno del servidor" });
-    }
-  },
-);
+router.get("/", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
+  try {
+    const players = await Player.find();
+    res.render("players_list", { players: players, user: req.user });
+  } catch (error) {
+    res.render("error", { error: "Error interno del servidor" });
+  }
+});
 
+//hecho
 router.post("/", protegerRuta(["admin"]), async (req, res) => {
   try {
-    if (
-      !req.body.nickname ||
-      !req.body.name ||
-      !req.body.country ||
-      !req.body.birthDate ||
-      !req.body.role
-    ) {
+    if (!req.body.nickname || !req.body.name || !req.body.country || !req.body.birthDate || !req.body.role) {
       res.render("error", {
         error: "Datos incorrectos: faltan campos obligatorios",
       });
@@ -60,39 +51,28 @@ router.post("/", protegerRuta(["admin"]), async (req, res) => {
   }
 });
 
-router.get(
-  "/find",
-  protegerRuta(["admin", "manager", "user"]),
-  async (req, res) => {
-    try {
-      if (!req.query.name) {
-        return res.status(400).json({
-          error: "Falta el parámetro de búsqueda",
-          result: null,
-        });
-      }
-      const players = await Player.find({
-        name: { $regex: req.query.name, $options: "i" },
-      });
-      if (players.length === 0) {
-        return res.status(404).json({
-          error: "No existen jugadores con ese nombre",
-          result: null,
-        });
-      }
-
-      return res.status(200).json({
-        error: null,
-        result: players,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        error: "Error interno del servidor",
+router.get("/find", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
+  try {
+    if (!req.query.name) {
+      return res.status(400).json({
+        error: "Falta el parámetro de búsqueda",
         result: null,
       });
     }
-  },
-);
+    const players = await Player.find({
+      name: { $regex: req.query.name, $options: "i" },
+    });
+    if (players.length === 0) {
+      return res.render("error", {
+        error: "No existen jugadores con ese nombre",
+      });
+    }
+
+    res.render("players_list", { players: players, user: req.user });
+  } catch (error) {
+    res.render("error", { error: "Error interno del servidor" });
+  }
+});
 
 //hecho
 router.get("/new", protegerRuta(["admin"]), (req, res) => {
@@ -100,33 +80,42 @@ router.get("/new", protegerRuta(["admin"]), (req, res) => {
 });
 
 //hecho
-router.get(
-  "/:id",
-  protegerRuta(["admin", "manager", "user"]),
-  async (req, res) => {
-    try {
-      const player = await Player.findById(req.params.id);
+router.get("/:id", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
+  try {
+    const player = await Player.findById(req.params.id);
 
-      if (!player) {
-        return res.render("error", { error: "No existe ese jugador" });
-      }
-
-      res.render("player_detail", { player: player });
-    } catch (error) {
-      res.render("error", { error: "Error interno del servidor" });
+    if (!player) {
+      return res.render("error", { error: "No existe ese jugador" });
     }
-  },
-);
 
-router.put("/:id", protegerRuta(["admin"]), async (req, res) => {
+    res.render("player_detail", { player: player });
+  } catch (error) {
+    res.render("error", { error: "Error interno del servidor" });
+  }
+});
+
+//hecho
+router.get("/:id/edit", protegerRuta(["admin"]), async (req, res) => {
+  try {
+    const player = await Player.findById(req.params.id);
+
+    if (!player) {
+      return res.render("error", { error: "No existe ese jugador" });
+    }
+
+    res.render("player_edit", { player: player });
+  } catch (error) {
+    res.render("error", { error: "Error interno del servidor" });
+  }
+});
+
+//hecho
+router.post("/:id", protegerRuta(["admin"]), async (req, res) => {
   try {
     const validatePlayer = await Player.findById(req.params.id);
 
     if (!validatePlayer) {
-      return res.status(404).json({
-        error: "Jugador no encontrado",
-        result: null,
-      });
+      res.render("error", { error: "Jugador no econtrado" });
     }
 
     let playerNickNameValidate = await Player.find({
@@ -135,9 +124,8 @@ router.put("/:id", protegerRuta(["admin"]), async (req, res) => {
     });
 
     if (playerNickNameValidate.length >= 1) {
-      return res.status(400).json({
+      res.render("error", {
         error: "El nickname ya está siendo utilizado por otro jugador",
-        result: null,
       });
     }
 
@@ -150,15 +138,11 @@ router.put("/:id", protegerRuta(["admin"]), async (req, res) => {
         role: req.body.role,
       },
     });
-    return res.status(200).json({
-      error: null,
-      result: "Jugador actualizado correctamente",
-    });
+
+    res.redirect("/players/" + req.params.id);
+    
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render("error", { error: "Error interno dle servidor" });
   }
 });
 
@@ -184,8 +168,7 @@ router.delete("/:id", protegerRuta(["admin"]), async (req, res) => {
 
     if (isPlayerActive.length >= 1) {
       return res.status(400).json({
-        error:
-          "No se puede eliminar el jugador porque está activo en algún equipo.",
+        error: "No se puede eliminar el jugador porque está activo en algún equipo.",
         result: null,
       });
     }

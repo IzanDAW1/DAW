@@ -9,6 +9,14 @@
             <a href="/players/new" class="btn btn-primary">Nuevo Jugador</a>
         {% endif %}
     </div>
+
+    <form class="mb-4" action="/players/find" method="get">
+        <div class="input-group">
+            <input type="text" class="form-control" name="name" placeholder="Buscar por nombre..." aria-label="Buscar por nombre">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+            <a href="/players" class="btn btn-outline-secondary">Limpiar</a>
+        </div>
+    </form>
     
     {% if players.length > 0 %}
         <div class="table-responsive shadow-sm rounded card-custom">
