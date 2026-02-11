@@ -6,68 +6,73 @@ import { protegerRuta } from "../auth/auth.js";
 
 let router = express.Router();
 
-router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
+//hecho
+router.get("/", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
   try {
     const teams = await Team.find();
 
-    if(!teams)
-    {
-      res.render('error', { error: "No hay equipos" });
+    if (!teams) {
+      res.render("error", { error: "No hay equipos" });
     }
 
-    res.render('teams_list', { teams: teams });
+    res.render("teams_list", { teams: teams });
   } catch (error) {
-    res.render('error', { error: "Error interno del servidor" });
+    res.render("error", { error: "Error interno del servidor" });
   }
 });
 
-router.post("/", protegerRuta(['admin']), async (req, res) => {
+//hecho
+router.post("/", protegerRuta(["admin"]), async (req, res) => {
   try {
+    let errors = {};
+
     if (!req.body.name) {
-      return res.status(400).json({
-        error: "Datos incorrectos: falta el nombre del equipo",
-        result: null,
-      });
+      errors.name = "El nombre es obligatorio";
+    } else if (req.body.name.trim().length < 3 || req.body.name.trim().length > 50) {
+      errors.name = "El nombre debe tener entre 3 y 50 caracteres";
+    } else {
+        const existingTeams = await Team.find({ name: req.body.name });
+        if (existingTeams.length > 0) {
+          errors.name = "Ya existe un equipo con ese nombre";
+        }
     }
 
-    const existingTeams = await Team.find({ name: req.body.name });
-    if (existingTeams.length > 0) {
-      return res.status(400).json({
-        error: "Datos incorrectos: ya existe un equipo con ese nombre",
-        result: null,
+    if (Object.keys(errors).length > 0) {
+      return res.render("team_add", {
+        errors: errors,
+        data: req.body
       });
     }
 
     const newTeam = new Team({
       name: req.body.name,
       foundedAt: req.body.foundedAt,
-      roster: req.body.roster,
+      roster: [],
     });
 
-    const savedTeam = await newTeam.save();
+    await newTeam.save();
 
-    return res.status(201).json({
-      result: savedTeam,
-    });
+    res.redirect("/teams");
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render("error", { error: "Error interno del servidor" });
   }
 });
 
-router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
+//hecho
+router.get("/new", protegerRuta(["admin"]), async (req, res) => {
+  res.render("team_add");
+});
+
+//hecho
+router.get("/:id", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
   try {
     const team = await Team.findById(req.params.id).populate("roster.player");
 
     if (!team) {
-      res.render('error', { error: "No existe ese equipo en el sistema" });
+      res.render("error", { error: "No existe ese equipo en el sistema" });
     }
 
-    const activeMembers = team.roster.filter(
-      (member) => member && member.active
-    );
+    const activeMembers = team.roster.filter((member) => member && member.active);
 
     const result = {
       _id: team._id,
@@ -76,17 +81,13 @@ router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) 
       roster: activeMembers,
     };
 
-    res.render('team_detail', { result: result });
-
+    res.render("team_detail", { result: result });
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render("error", { error: "Error interno del servidor" });
   }
 });
 
-router.delete("/:id", protegerRuta(['admin']), async (req, res) => {
+router.delete("/:id", protegerRuta(["admin"]), async (req, res) => {
   try {
     const teamToDelete = await Team.findById(req.params.id);
 
@@ -121,68 +122,75 @@ router.delete("/:id", protegerRuta(['admin']), async (req, res) => {
   }
 });
 
-router.post("/:id/roster", protegerRuta(['admin', 'manager']), async (req, res) => {
+router.post("/:id/roster", protegerRuta(["admin", "manager"]), async (req, res) => {
   try {
+    let errors = {};
     const team = await Team.findById(req.params.id);
     if (!team) {
-      return res.status(404).json({
-        error: "Equipo no encontrado",
-        result: null,
-      });
+      return res.render("error", { error: "Equipo no encontrado" });
     }
 
     const playerToAdd = await Player.findById(req.body.player);
     if (!playerToAdd) {
-      return res.status(404).json({
-        error: "Jugador no encontrado",
-        result: null,
-      });
+      errors.player = "Jugador no encontrado";
     }
 
     for (const member of team.roster) {
       if (member.player.toString() === req.body.player && member.active) {
-        return res.status(400).json({
-          error: "El jugador ya está activo en el roster de este equipo",
-          result: null,
-        });
+        errors.player = "El jugador ya está activo en el roster de este equipo";
       }
     }
 
     const otherTeam = await Team.findOne({
       _id: { $ne: team._id },
-      roster: { $elemMatch: { player: playerToAdd._id, active: true } },
+      roster: { $elemMatch: { player: req.body.player, active: true } },
     });
 
     if (otherTeam) {
-      return res.status(400).json({
-        error: "El jugador está activo en otro equipo",
-        result: null,
-      });
+      errors.player = "El jugador está activo en otro equipo (" + otherTeam.name + ")";
+    }
+
+    if (Object.keys(errors).length > 0) {
+        const players = await Player.find();
+        return res.render("team_add_player", {
+            errors: errors,
+            team: team,
+            players: players,
+            data: req.body
+        });
     }
 
     const newRosterPlayer = {
       player: req.body.player,
-      joinDate: req.body.joinDate,
-      active: req.body.active || true,
+      joinDate: req.body.joinDate || new Date(),
+      active: req.body.active === 'on' || req.body.active === true,
     };
 
     team.roster.push(newRosterPlayer);
 
     await team.save();
 
-    return res.status(200).json({
-      error: null,
-      result: team,
-    });
+    res.redirect("/teams/" + req.params.id);
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render('error', {error: 'Error interno del servidor: ' + error.message})
   }
 });
 
-router.delete("/:id/roster/:playerId", protegerRuta(['admin', 'manager']), async (req, res) => {
+router.get('/:id/roster/new', protegerRuta(["admin"]), async (req,res) => {
+  try {
+    const team = await Team.findById(req.params.id);
+    if (!team) {
+        return res.render("error", { error: "Equipo no encontrado" });
+    }
+    const players = await Player.find();
+
+    res.render("team_add_player", { team: team, players: players });
+  } catch (error) {
+     res.render("error", { error: "Error interno del servidor" });
+  }
+})
+
+router.delete("/:id/roster/:playerId", protegerRuta(["admin", "manager"]), async (req, res) => {
   try {
     const team = await Team.findById(req.params.id);
 

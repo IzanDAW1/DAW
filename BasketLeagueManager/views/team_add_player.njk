@@ -1,0 +1,54 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Añadir Jugador al Roster{% endblock %}
+
+{% block contenido %}
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card card-custom mb-3" style="max-width: 600px; width: 100%;">
+            <div class="card-header card-header-custom text-center">
+                <h3 class="mb-0 text-white">Añadir Jugador a {{ team.name }}</h3>
+            </div>
+            <div class="card-body">
+                <form action="/teams/{{ team.id }}/roster" method="post">
+                    
+                    {% if errors.general %}
+                        <div class="alert alert-danger">{{ errors.general }}</div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label for="player" class="form-label text-black fw-bold">Jugador</label>
+                        <select class="form-select {% if errors.player %}is-invalid{% endif %}" id="player" name="player" required>
+                            <option value="" selected disabled>Selecciona un jugador...</option>
+                            {% for player in players %}
+                                <option value="{{ player.id }}" {% if data.player == player.id %}selected{% endif %}>
+                                    {{ player.name }} ({{ player.nickname }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        {% if errors.player %}
+                            <div class="invalid-feedback">{{ errors.player }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="joinDate" class="form-label text-black fw-bold">Fecha de Incorporación</label>
+                        <input type="date" class="form-control {% if errors.joinDate %}is-invalid{% endif %}" id="joinDate" name="joinDate" required value="{{ data.joinDate }}">
+                        {% if errors.joinDate %}
+                            <div class="invalid-feedback">{{ errors.joinDate }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="active" name="active" checked>
+                        <label class="form-check-label text-black" for="active">Activo actualmente</label>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="/teams/{{ team.id }}" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Añadir al Roster</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

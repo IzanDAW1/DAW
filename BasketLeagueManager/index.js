@@ -10,6 +10,8 @@ import teams from "./routes/teams.js";
 import matches from "./routes/matches.js";
 import auth from "./routes/auth.js";
 
+import { validarToken } from "./auth/auth.js";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -28,6 +30,17 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist')));
 app.use(cookieParser());
+
+app.use((req, res, next) => {
+    const token = req.cookies.token;
+    if (token) {
+        const user = validarToken(token);
+        if (user) {
+            res.locals.user = user;
+        }
+    }
+    next();
+});
 
 app.use("/players", players);
 app.use("/teams", teams);

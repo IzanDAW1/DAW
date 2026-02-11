@@ -51,13 +51,11 @@ router.post("/", protegerRuta(["admin"]), async (req, res) => {
   }
 });
 
+//hecho
 router.get("/find", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
   try {
     if (!req.query.name) {
-      return res.status(400).json({
-        error: "Falta el parámetro de búsqueda",
-        result: null,
-      });
+      res.render('error', {error: 'Falta el parámetro de búsqueda'});
     }
     const players = await Player.find({
       name: { $regex: req.query.name, $options: "i" },

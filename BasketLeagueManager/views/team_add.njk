@@ -1,0 +1,34 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Nuevo Equipo{% endblock %}
+
+{% block contenido %}
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card card-custom mb-3" style="max-width: 600px; width: 100%;">
+            <div class="card-header card-header-custom text-center">
+                <h3 class="mb-0 text-white">Nuevo Equipo</h3>
+            </div>
+            <div class="card-body">
+                <form action="/teams" method="post">
+                    <div class="mb-3">
+                        <label for="name" class="form-label text-black fw-bold">Nombre del Equipo</label>
+                        <input type="text" class="form-control {% if errors.name %}is-invalid{% endif %}" id="name" name="name" required minlength="3" maxlength="50" placeholder="Ej: Los Angeles Lakers" value="{{ data.name }}">
+                        {% if errors.name %}
+                            <div class="invalid-feedback">{{ errors.name }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="foundedAt" class="form-label text-black fw-bold">Fecha de Fundación</label>
+                        <input type="date" class="form-control" id="foundedAt" name="foundedAt" value="{{ data.foundedAt }}">
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="/teams" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar Equipo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -5,7 +5,9 @@
 {% block contenido %}
     <div class="d-flex justify-content-between align-items-center my-4">
         <h1 class="h2">Listado de Equipos</h1>
-        <a href="/teams/new" class="btn btn-primary disabled" aria-disabled="true">Nuevo Equipo</a>
+        {% if user.rol == 'admin' %}
+            <a href="/teams/new" class="btn btn-primary">Nuevo Equipo</a>
+        {% endif %}
     </div>
     
     {% if teams.length > 0 %}
