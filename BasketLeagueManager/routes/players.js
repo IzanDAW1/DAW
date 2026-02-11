@@ -5,13 +5,14 @@ import { protegerRuta } from "../auth/auth.js";
 
 const router = express.Router();
 
+//hecho
 router.get(
   "/",
   protegerRuta(["admin", "manager", "user"]),
   async (req, res) => {
     try {
       const players = await Player.find();
-      res.render("players_list", { players: players });
+      res.render("players_list", { players: players, user: req.user });
     } catch (error) {
       res.render("error", { error: "Error interno del servidor" });
     }
@@ -27,9 +28,8 @@ router.post("/", protegerRuta(["admin"]), async (req, res) => {
       !req.body.birthDate ||
       !req.body.role
     ) {
-      return res.status(400).json({
+      res.render("error", {
         error: "Datos incorrectos: faltan campos obligatorios",
-        result: null,
       });
     }
 
@@ -38,10 +38,7 @@ router.post("/", protegerRuta(["admin"]), async (req, res) => {
     });
 
     if (playerNickNameValidate.length >= 1) {
-      return res.status(400).json({
-        error: "El nickname ya está registrado",
-        result: null,
-      });
+      res.render("error", { error: "El nickname ya está registrado" });
     }
 
     let newPlayer = new Player({
@@ -52,11 +49,9 @@ router.post("/", protegerRuta(["admin"]), async (req, res) => {
       role: req.body.role,
     });
 
-    const savedNewPlayer = await newPlayer.save();
+    await newPlayer.save();
 
-    return res.status(201).json({
-      result: savedNewPlayer,
-    });
+    res.redirect("/players");
   } catch (error) {
     return res.status(500).json({
       error: "Error interno del servidor",
@@ -99,6 +94,12 @@ router.get(
   },
 );
 
+//hecho
+router.get("/new", protegerRuta(["admin"]), (req, res) => {
+  res.render("player_add");
+});
+
+//hecho
 router.get(
   "/:id",
   protegerRuta(["admin", "manager", "user"]),
@@ -109,7 +110,7 @@ router.get(
       if (!player) {
         return res.render("error", { error: "No existe ese jugador" });
       }
-      
+
       res.render("player_detail", { player: player });
     } catch (error) {
       res.render("error", { error: "Error interno del servidor" });

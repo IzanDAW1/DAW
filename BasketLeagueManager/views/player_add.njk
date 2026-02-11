@@ -1,0 +1,55 @@
+{% extends "base.njk" %}
+
+{% block titulo %}Nuevo Jugador{% endblock %}
+
+{% block contenido %}
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card card-custom mb-3" style="max-width: 600px; width: 100%;">
+            <div class="card-header card-header-custom text-center">
+                <h3 class="mb-0 text-white">Nuevo Jugador</h3>
+            </div>
+            <div class="card-body">
+                <form action="/players" method="post">
+                    <div class="mb-3">
+                        <label for="nickname" class="form-label text-black fw-bold">Nickname</label>
+                        <input type="text" class="form-control" id="nickname" name="nickname" required minlength="3" maxlength="20" placeholder="Ej: AirJordan">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label text-black fw-bold">Nombre Completo</label>
+                        <input type="text" class="form-control" id="name" name="name" required minlength="3" maxlength="50" placeholder="Ej: Michael Jordan">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="country" class="form-label text-black fw-bold">País</label>
+                        <input type="text" class="form-control" id="country" name="country" required pattern="^[A-Z]{2}$" placeholder="Código de 2 letras (ej. ES, US)">
+                        <div class="form-text">Usa el código ISO de 2 letras (ej. ES para España).</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="birthDate" class="form-label text-black fw-bold">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" id="birthDate" name="birthDate" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="role" class="form-label text-black fw-bold">Rol</label>
+                        <select class="form-select" id="role" name="role" required>
+                            <option value="" selected disabled>Selecciona un rol...</option>
+                            <option value="Base">Base</option>
+                            <option value="Escolta">Escolta</option>
+                            <option value="Alero">Alero</option>
+                            <option value="Ala-pívot">Ala-pívot</option>
+                            <option value="Pívot">Pívot</option>
+                            <option value="Polivalente">Polivalente</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="/players" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar Jugador</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
