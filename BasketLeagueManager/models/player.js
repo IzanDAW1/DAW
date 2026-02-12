@@ -27,6 +27,11 @@ let playerSchema = new mongoose.Schema({
         type: String,
         required: true,
         enum: ["Base","Escolta","Alero","Ala-pívot","Pívot","Polivalente"]
+    },
+    image: {
+        type: String,
+        required: false,
+        trim: true
     }
 });
 

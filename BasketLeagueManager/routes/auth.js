@@ -33,7 +33,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/logout", (req, res) => {
   res.clearCookie("token");
-  res.redirect("/login");
+  res.redirect("/auth/login");
 });
 
 export default router;

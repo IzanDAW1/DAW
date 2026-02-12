@@ -1,7 +1,5 @@
 {% extends "base.njk" %}
-
 {% block titulo %}Editar Jugador{% endblock %}
-
 {% block contenido %}
     <div class="d-flex justify-content-center mt-5">
         <div class="card card-custom mb-3" style="max-width: 600px; width: 100%;">
@@ -9,46 +7,48 @@
                 <h3 class="mb-0 text-white">Editar Jugador</h3>
             </div>
             <div class="card-body">
-                <form action="/players/{{ player.id }}" method="post">
+                <form action="/players/{{ player.id }}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="image" class="form-label text-black fw-bold">Imagen del Jugador</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                        {% if player.image %}
+                            <div class="mt-2">
+                                <p>Imagen actual:</p>
+                                <img src="/public/uploads/{{ player.image }}" alt="Imagen de {{ player.nickname }}" width="100">
+                            </div>
+                        {% endif %}
+                    </div>
                     <div class="mb-3">
                         <label for="nickname" class="form-label text-black fw-bold">Nickname</label>
-                        <input type="text" class="form-control" id="nickname" name="nickname" required minlength="3" maxlength="20" value="{{ player.nickname }}">
+                        <input type="text" class="form-control" id="nickname" name="nickname" required minlength="3" maxlength="20" value="{{ player.nickname }}"></div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label text-black fw-bold">Nombre Completo</label>
+                            <input type="text" class="form-control" id="name" name="name" required minlength="3" maxlength="50" value="{{ player.name }}"></div>
+                            <div class="mb-3">
+                                <label for="country" class="form-label text-black fw-bold">País</label>
+                                <input type="text" class="form-control" id="country" name="country" required pattern="^[A-Z]{2}$" value="{{ player.country }}">
+                                    <div class="form-text">Usa el código ISO de 2 letras (ej. ES para España).</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="birthDate" class="form-label text-black fw-bold">Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" id="birthDate" name="birthDate" required value="{{ player.birthDate.toISOString().split('T')[0] }}"></div>
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label text-black fw-bold">Rol</label>
+                                        <select class="form-select" id="role" name="role" required>
+                                            <option value="Base" {% if player.role == 'Base' %} selected {% endif %}>Base</option>
+                                            <option value="Escolta" {% if player.role == 'Escolta' %} selected {% endif %}>Escolta</option>
+                                            <option value="Alero" {% if player.role == 'Alero' %} selected {% endif %}>Alero</option>
+                                            <option value="Ala-pívot" {% if player.role == 'Ala-pívot' %} selected {% endif %}>Ala-pívot</option>
+                                            <option value="Pívot" {% if player.role == 'Pívot' %} selected {% endif %}>Pívot</option>
+                                            <option value="Polivalente" {% if player.role == 'Polivalente' %} selected {% endif %}>Polivalente</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                        <a href="/players" class="btn btn-outline-secondary">Cancelar</a>
+                                        <button type="submit" class="btn btn-primary">Actualizar Jugador</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="name" class="form-label text-black fw-bold">Nombre Completo</label>
-                        <input type="text" class="form-control" id="name" name="name" required minlength="3" maxlength="50" value="{{ player.name }}">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="country" class="form-label text-black fw-bold">País</label>
-                        <input type="text" class="form-control" id="country" name="country" required pattern="^[A-Z]{2}$" value="{{ player.country }}">
-                        <div class="form-text">Usa el código ISO de 2 letras (ej. ES para España).</div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="birthDate" class="form-label text-black fw-bold">Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" id="birthDate" name="birthDate" required value="{{ player.birthDate.toISOString().split('T')[0] }}">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="role" class="form-label text-black fw-bold">Rol</label>
-                        <select class="form-select" id="role" name="role" required>
-                            <option value="Base" {% if player.role == 'Base' %}selected{% endif %}>Base</option>
-                            <option value="Escolta" {% if player.role == 'Escolta' %}selected{% endif %}>Escolta</option>
-                            <option value="Alero" {% if player.role == 'Alero' %}selected{% endif %}>Alero</option>
-                            <option value="Ala-pívot" {% if player.role == 'Ala-pívot' %}selected{% endif %}>Ala-pívot</option>
-                            <option value="Pívot" {% if player.role == 'Pívot' %}selected{% endif %}>Pívot</option>
-                            <option value="Polivalente" {% if player.role == 'Polivalente' %}selected{% endif %}>Polivalente</option>
-                        </select>
-                    </div>
-
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                        <a href="/players" class="btn btn-outline-secondary">Cancelar</a>
-                        <button type="submit" class="btn btn-primary">Actualizar Jugador</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+                {% endblock %}

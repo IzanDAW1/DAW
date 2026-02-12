@@ -101,10 +101,7 @@ router.delete("/:id", protegerRuta(['admin', 'manager']), async (req, res) => {
       result: match,
     });
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render("error", { error: "Error interno del servidor" });
   }
 });
 

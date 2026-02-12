@@ -2,8 +2,20 @@ import express from "express";
 import Player from "../models/player.js";
 import Team from "../models/team.js";
 import { protegerRuta } from "../auth/auth.js";
+import multer from "multer";
 
 const router = express.Router();
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "_" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 //hecho
 router.get("/", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
@@ -16,7 +28,7 @@ router.get("/", protegerRuta(["admin", "manager", "user"]), async (req, res) => 
 });
 
 //hecho
-router.post("/", protegerRuta(["admin"]), async (req, res) => {
+router.post("/", protegerRuta(["admin"]), upload.single("image"), async (req, res) => {
   try {
     if (!req.body.nickname || !req.body.name || !req.body.country || !req.body.birthDate || !req.body.role) {
       res.render("error", {
@@ -39,15 +51,16 @@ router.post("/", protegerRuta(["admin"]), async (req, res) => {
       birthDate: req.body.birthDate,
       role: req.body.role,
     });
+    
+    if (req.file) {
+      newPlayer.image = req.file.filename;
+    }
 
     await newPlayer.save();
 
     res.redirect("/players");
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render("error", { error: "Error interno del servidor" });
   }
 });
 
@@ -108,7 +121,7 @@ router.get("/:id/edit", protegerRuta(["admin"]), async (req, res) => {
 });
 
 //hecho
-router.post("/:id", protegerRuta(["admin"]), async (req, res) => {
+router.post("/:id", protegerRuta(["admin"]), upload.single("image"), async (req, res) => {
   try {
     const validatePlayer = await Player.findById(req.params.id);
 
@@ -127,14 +140,20 @@ router.post("/:id", protegerRuta(["admin"]), async (req, res) => {
       });
     }
 
+    const updateData = {
+      nickname: req.body.nickname,
+      name: req.body.name,
+      country: req.body.country,
+      birthDate: req.body.birthDate,
+      role: req.body.role,
+    };
+
+    if (req.file) {
+      updateData.image = req.file.filename;
+    }
+
     await Player.findByIdAndUpdate(req.params.id, {
-      $set: {
-        nickname: req.body.nickname,
-        name: req.body.name,
-        country: req.body.country,
-        birthDate: req.body.birthDate,
-        role: req.body.role,
-      },
+      $set: updateData,
     });
 
     res.redirect("/players/" + req.params.id);
@@ -178,10 +197,7 @@ router.delete("/:id", protegerRuta(["admin"]), async (req, res) => {
       result: deletedPlayer,
     });
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render("error", { error: "Error interno del servidor" });
   }
 });
 

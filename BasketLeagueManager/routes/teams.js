@@ -115,10 +115,7 @@ router.delete("/:id", protegerRuta(["admin"]), async (req, res) => {
       result: deletedTeam,
     });
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render("error", { error: "Error interno del servidor" });
   }
 });
 
@@ -222,10 +219,7 @@ router.delete("/:id/roster/:playerId", protegerRuta(["admin", "manager"]), async
       result: null,
     });
   } catch (error) {
-    return res.status(500).json({
-      error: "Error interno del servidor",
-      result: null,
-    });
+    res.render("error", { error: "Error interno del servidor" });
   }
 });
 

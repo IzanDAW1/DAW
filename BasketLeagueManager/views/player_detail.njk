@@ -10,8 +10,12 @@
             </div>
             <div class="row g-0">
                 <div class="col-md-4 d-flex align-items-center justify-content-center bg-light">
-                    <!-- Placeholder generic avatar if no image -->
-                    <div class="display-1 text-secondary"><i class="bi bi-person-bounding-box"></i></div>
+                    {% if player.image %}
+                        <img src="/public/uploads/{{ player.image }}" alt="Imagen de {{ player.nickname }}" class="img-fluid rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                        <!-- Placeholder generic avatar if no image -->
+                        <div class="display-1 text-secondary"><i class="bi bi-person-bounding-box"></i></div>
+                    {% endif %}
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
