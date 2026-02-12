@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-//hecho
+
 router.get("/", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
   try {
     const players = await Player.find();
@@ -27,7 +27,7 @@ router.get("/", protegerRuta(["admin", "manager", "user"]), async (req, res) => 
   }
 });
 
-//hecho
+
 router.post("/", protegerRuta(["admin"]), upload.single("image"), async (req, res) => {
   try {
     if (!req.body.nickname || !req.body.name || !req.body.country || !req.body.birthDate || !req.body.role) {
@@ -64,7 +64,7 @@ router.post("/", protegerRuta(["admin"]), upload.single("image"), async (req, re
   }
 });
 
-//hecho
+
 router.get("/find", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
   try {
     if (!req.query.name) {
@@ -85,12 +85,12 @@ router.get("/find", protegerRuta(["admin", "manager", "user"]), async (req, res)
   }
 });
 
-//hecho
+
 router.get("/new", protegerRuta(["admin"]), (req, res) => {
   res.render("player_add");
 });
 
-//hecho
+
 router.get("/:id", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
   try {
     const player = await Player.findById(req.params.id);
@@ -105,7 +105,7 @@ router.get("/:id", protegerRuta(["admin", "manager", "user"]), async (req, res) 
   }
 });
 
-//hecho
+
 router.get("/:id/edit", protegerRuta(["admin"]), async (req, res) => {
   try {
     const player = await Player.findById(req.params.id);
@@ -120,7 +120,7 @@ router.get("/:id/edit", protegerRuta(["admin"]), async (req, res) => {
   }
 });
 
-//hecho
+
 router.post("/:id", protegerRuta(["admin"]), upload.single("image"), async (req, res) => {
   try {
     const validatePlayer = await Player.findById(req.params.id);

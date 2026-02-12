@@ -6,7 +6,7 @@ import { protegerRuta } from "../auth/auth.js";
 
 let router = express.Router();
 
-//hecho
+
 router.get("/", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
   try {
     const teams = await Team.find();
@@ -21,7 +21,7 @@ router.get("/", protegerRuta(["admin", "manager", "user"]), async (req, res) => 
   }
 });
 
-//hecho
+
 router.post("/", protegerRuta(["admin"]), async (req, res) => {
   try {
     let errors = {};
@@ -58,12 +58,12 @@ router.post("/", protegerRuta(["admin"]), async (req, res) => {
   }
 });
 
-//hecho
+
 router.get("/new", protegerRuta(["admin"]), async (req, res) => {
   res.render("team_add");
 });
 
-//hecho
+
 router.get("/:id", protegerRuta(["admin", "manager", "user"]), async (req, res) => {
   try {
     const team = await Team.findById(req.params.id).populate("roster.player");
@@ -119,7 +119,7 @@ router.delete("/:id", protegerRuta(["admin"]), async (req, res) => {
   }
 });
 
-//hecho
+
 router.post("/:id/roster", protegerRuta(["admin", "manager"]), async (req, res) => {
   try {
     let errors = {};
@@ -174,7 +174,7 @@ router.post("/:id/roster", protegerRuta(["admin", "manager"]), async (req, res) 
   }
 });
 
-//hecho
+
 router.get('/:id/roster/new', protegerRuta(["admin"]), async (req,res) => {
   //Le he metido lo de poder ver todos los jugadores disponibles por que lo veo mas coherenete y no me costaba nada ponerlo
   try {

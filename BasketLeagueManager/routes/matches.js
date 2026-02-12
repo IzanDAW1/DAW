@@ -5,7 +5,7 @@ import { protegerRuta } from "../auth/auth.js";
 
 const router = express.Router();
 
-//hecho
+
 router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const matches = await Match.find()
@@ -23,7 +23,7 @@ router.get("/", protegerRuta(['admin', 'manager', 'user']), async (req, res) => 
   }
 });
 
-//hecho
+
 router.post("/", protegerRuta(['admin', 'manager']), async (req, res) => {
   try {
     let errors = {};
@@ -67,7 +67,7 @@ router.get("/new", protegerRuta(['admin', 'manager', 'user']), async (req,res) =
   }
 });
 
-//hecho
+
 router.get("/:id", protegerRuta(['admin', 'manager', 'user']), async (req, res) => {
   try {
     const match = await Match.findById(req.params.id)
